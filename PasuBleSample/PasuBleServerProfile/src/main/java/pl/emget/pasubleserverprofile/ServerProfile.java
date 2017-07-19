@@ -62,4 +62,9 @@ public class ServerProfile {
         return mProfileAttributes.get(inputUUID);
     }
 
+    public static String lookup(UUID uuid, String defaultName) {
+        String name = mProfileAttributes.get(uuid);
+        return name == null ? defaultName : name;
+    }
+
 }
