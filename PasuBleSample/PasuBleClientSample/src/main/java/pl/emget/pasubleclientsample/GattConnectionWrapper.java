@@ -28,14 +28,12 @@ public class GattConnectionWrapper {
     private boolean mIsConnected;
     private boolean mReadInProgress;
 
+    // queue makes sure the characteristic read events are processed one after another
     private Queue<BluetoothGattCharacteristic> mCharacteristicsQueue;
 
-    // Implements callback methods for GATT events that the app cares about.  For example,
-    // connection change and services discovered.
     private final BluetoothGattCallback mGattCallback = new BluetoothGattCallback() {
         @Override
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
-            String intentAction;
             if (newState == BluetoothProfile.STATE_CONNECTED) {
                 Log.d(TAG, "Connected to GATT server.");
                 mIsConnected = true;
@@ -74,6 +72,7 @@ public class GattConnectionWrapper {
             synchronized (this) {
                 mReadInProgress = false;
             }
+            // process the remaining queue items if any
             processCharacteristicsQueue();
         }
 
@@ -131,27 +130,49 @@ public class GattConnectionWrapper {
         Log.d(TAG, "readCharacteristic()");
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.w(TAG, "BluetoothAdapter not initialized");
+            mGattConnectionCallback.postStatusUpdate("BluetoothAdapter not initialized");
             return;
         }
+        if(!mIsConnected){
+            Log.w(TAG, "Device is disconnected!");
+            mGattConnectionCallback.postStatusUpdate("Device is disconnected!");
+        }
+        // add the read request to the queue and start processing
         mCharacteristicsQueue.add(characteristic);
         processCharacteristicsQueue();
     }
 
     /**
-     * Enables or disables notification on a give characteristic.
+     * Enables or disables notification on a given characteristic.
      *
      * @param characteristic Characteristic to act on.
      * @param enabled        If true, enable notification.  False otherwise.
      */
     public void setCharacteristicNotification(BluetoothGattCharacteristic characteristic, boolean enabled) {
+        Log.d(TAG, "setCharacteristicNotification()");
         if (mBluetoothAdapter == null || mBluetoothGatt == null) {
             Log.w(TAG, "BluetoothAdapter not initialized");
+            mGattConnectionCallback.postStatusUpdate("BluetoothAdapter not initialized");
             return;
+        }
+        if(!mIsConnected){
+            Log.w(TAG, "Device is disconnected!");
+            mGattConnectionCallback.postStatusUpdate("Device is disconnected!");
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
     }
 
     public void writeCharacteristic(BluetoothGattCharacteristic characteristic, String value){
+        Log.d(TAG, "writeCharacteristic()");
+        if (mBluetoothAdapter == null || mBluetoothGatt == null) {
+            Log.w(TAG, "BluetoothAdapter not initialized");
+            mGattConnectionCallback.postStatusUpdate("BluetoothAdapter not initialized");
+            return;
+        }
+        if(!mIsConnected){
+            Log.w(TAG, "Device is disconnected!");
+            mGattConnectionCallback.postStatusUpdate("Device is disconnected!");
+        }
         characteristic.setValue(value);
         mBluetoothGatt.writeCharacteristic(characteristic);
     }
@@ -186,6 +207,10 @@ public class GattConnectionWrapper {
         mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);
     }
 
+    /**
+     * Processes characteristics read requests.
+     * Synchronized method.
+     */
     private synchronized void processCharacteristicsQueue() {
         if (mCharacteristicsQueue.isEmpty()) {
             return;
