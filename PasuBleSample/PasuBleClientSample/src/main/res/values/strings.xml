@@ -4,4 +4,8 @@
     <string name="status_label_idle">IDLE</string>
     <string name="status_label_scanning">Scanning for BLE devices</string>
     <string name="unknown_device">Unknown device</string>
+    <string name="device_details_label">%1$s : %2$s</string>
+    <string name="firmware_label">%1$s version %2$s</string>
+    <string name="temperature_label">Temperature: %1$s\u2103</string>
+    <string name="voltage_label">Voltage: %1$sV</string>
 </resources>
