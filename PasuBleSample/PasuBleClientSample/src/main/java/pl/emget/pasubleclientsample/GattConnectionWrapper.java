@@ -10,8 +10,6 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Queue;
 
@@ -151,11 +149,6 @@ public class GattConnectionWrapper {
             return;
         }
         mBluetoothGatt.setCharacteristicNotification(characteristic, enabled);
-
-        //        BluetoothGattDescriptor descriptor = characteristic.getDescriptor(UUID.fromString(SampleGattAttributes
-        // .CLIENT_CHARACTERISTIC_CONFIG));
-        //        descriptor.setValue(BluetoothGattDescriptor.ENABLE_NOTIFICATION_VALUE);
-        //        mBluetoothGatt.writeDescriptor(descriptor);
     }
 
     public void writeCharacteristic(BluetoothGattCharacteristic characteristic, String value){

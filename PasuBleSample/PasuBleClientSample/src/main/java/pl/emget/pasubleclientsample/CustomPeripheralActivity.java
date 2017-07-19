@@ -1,8 +1,10 @@
 package pl.emget.pasubleclientsample;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.bluetooth.BluetoothGattCharacteristic;
 import android.bluetooth.BluetoothGattService;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -142,12 +144,16 @@ public class CustomPeripheralActivity extends Activity implements GattConnection
     }
 
     public void onColorChangeClick(View view) {
-        ++counter;
-        if(counter > 2){
-            counter = 0;
-        }
-        mGattConnectionWrapper.writeCharacteristic(mColorSetCharacteristic, String.valueOf(counter));
+        CharSequence[] array = {"Transparent", "Red", "Green", "Blue"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Set lamp color")
+                .setSingleChoiceItems(array, 0, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        mGattConnectionWrapper.writeCharacteristic(mColorSetCharacteristic, String.valueOf(which));
+                        dialog.dismiss();
+                    }
+                });
+        builder.show();
     }
-
-    int counter = 0;
 }

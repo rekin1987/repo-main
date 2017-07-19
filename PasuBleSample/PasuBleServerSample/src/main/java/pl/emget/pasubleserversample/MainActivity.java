@@ -155,10 +155,13 @@ public class MainActivity extends Activity implements MainActivityInterface {
                         colorResId = Color.TRANSPARENT;
                         break;
                     case 1:
-                        colorResId = getResources().getColor(R.color.colorPrimary);
+                        colorResId = getResources().getColor(pl.emget.pasubleserverprofile.R.color.colorRed);
                         break;
                     case 2:
-                        colorResId = getResources().getColor(R.color.colorAccent);
+                        colorResId = getResources().getColor(pl.emget.pasubleserverprofile.R.color.colorGreen);
+                        break;
+                    case 3:
+                        colorResId = getResources().getColor(pl.emget.pasubleserverprofile.R.color.colorBlue);
                         break;
                     default:
                         colorResId = Color.TRANSPARENT;
