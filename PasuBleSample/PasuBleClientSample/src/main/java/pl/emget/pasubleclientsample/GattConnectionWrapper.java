@@ -10,6 +10,11 @@ import android.bluetooth.BluetoothProfile;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Queue;
+
 import static android.content.Context.BLUETOOTH_SERVICE;
 
 public class GattConnectionWrapper {
@@ -23,6 +28,9 @@ public class GattConnectionWrapper {
     private BluetoothGatt mBluetoothGatt;
 
     private boolean mIsConnected;
+    private boolean mReadInProgress;
+
+    private Queue<BluetoothGattCharacteristic> mCharacteristicsQueue;
 
     // Implements callback methods for GATT events that the app cares about.  For example,
     // connection change and services discovered.
@@ -31,16 +39,15 @@ public class GattConnectionWrapper {
         public void onConnectionStateChange(BluetoothGatt gatt, int status, int newState) {
             String intentAction;
             if (newState == BluetoothProfile.STATE_CONNECTED) {
-                Log.i(TAG, "Connected to GATT server.");
+                Log.d(TAG, "Connected to GATT server.");
                 mIsConnected = true;
                 mGattConnectionCallback.postStatusUpdate("Connected to GATT server.");
                 // Attempts to discover services after successful connection.
-                Log.i(TAG, "Attempting to start service discovery");
-                mGattConnectionCallback.postStatusUpdate("Attempting to start service discovery.");
+                Log.d(TAG, "Attempting to start service discovery");
                 mBluetoothGatt.discoverServices();
 
             } else if (newState == BluetoothProfile.STATE_DISCONNECTED) {
-                Log.i(TAG, "Disconnected from GATT server.");
+                Log.d(TAG, "Disconnected from GATT server.");
                 mIsConnected = false;
                 mGattConnectionCallback.postStatusUpdate("Disconnected from GATT server.");
             }
@@ -49,28 +56,32 @@ public class GattConnectionWrapper {
         @Override
         public void onServicesDiscovered(BluetoothGatt gatt, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.i(TAG, "onServicesDiscovered()");
+                Log.d(TAG, "onServicesDiscovered()");
                 mGattConnectionCallback.onServicesDiscovered(gatt.getServices());
             } else {
                 Log.w(TAG, "onServicesDiscovered received: " + status);
-                mGattConnectionCallback.postStatusUpdate("onServicesDiscovered received: " + status);
+                mGattConnectionCallback.postStatusUpdate("onServicesDiscovered() status: " + status);
             }
         }
 
         @Override
         public void onCharacteristicRead(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                Log.i(TAG, "onCharacteristicRead()");
+                Log.d(TAG, "onCharacteristicRead()");
                 mGattConnectionCallback.onCharacteristicRead(characteristic);
             } else {
                 Log.w(TAG, "onCharacteristicRead() status: " + status);
                 mGattConnectionCallback.postStatusUpdate("onCharacteristicRead() status: " + status);
             }
+            synchronized (this) {
+                mReadInProgress = false;
+            }
+            processCharacteristicsQueue();
         }
 
         @Override
         public void onCharacteristicChanged(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic) {
-            Log.i(TAG, "onCharacteristicChanged()");
+            Log.d(TAG, "onCharacteristicChanged()");
             mGattConnectionCallback.onCharacteristicNotification(characteristic);
         }
     };
@@ -79,6 +90,7 @@ public class GattConnectionWrapper {
         mGattConnectionCallback = callback;
         mContext = context;
         mDeviceAddress = deviceAddress;
+        mCharacteristicsQueue = new PriorityQueue<>();
     }
 
     public void init() {
@@ -123,7 +135,8 @@ public class GattConnectionWrapper {
             Log.w(TAG, "BluetoothAdapter not initialized");
             return;
         }
-        mBluetoothGatt.readCharacteristic(characteristic);
+        mCharacteristicsQueue.add(characteristic);
+        processCharacteristicsQueue();
     }
 
     /**
@@ -145,6 +158,11 @@ public class GattConnectionWrapper {
         //        mBluetoothGatt.writeDescriptor(descriptor);
     }
 
+    public void writeCharacteristic(BluetoothGattCharacteristic characteristic, String value){
+        characteristic.setValue(value);
+        mBluetoothGatt.writeCharacteristic(characteristic);
+    }
+
     /**
      * Connects to the GATT server hosted on the Bluetooth LE device.
      *
@@ -158,7 +176,7 @@ public class GattConnectionWrapper {
         }
 
         // Previously connected device.  Try to reconnect.
-        if (mDeviceAddress != null && mBluetoothGatt != null) {
+        if (mBluetoothGatt != null) {
             Log.d(TAG, "Trying to use an existing mBluetoothGatt for connection.");
             mBluetoothGatt.connect();
             return;
@@ -173,6 +191,18 @@ public class GattConnectionWrapper {
         // We want to directly connect to the device, so we are setting the autoConnect parameter to false.
         Log.d(TAG, "Trying to create a new connection.");
         mBluetoothGatt = device.connectGatt(mContext, false, mGattCallback);
+    }
+
+    private synchronized void processCharacteristicsQueue() {
+        if (mCharacteristicsQueue.isEmpty()) {
+            return;
+        }
+        if (mReadInProgress) {
+            return;
+        }
+        mReadInProgress = true;
+        BluetoothGattCharacteristic charac = mCharacteristicsQueue.poll();
+        mBluetoothGatt.readCharacteristic(charac);
     }
 
 }
