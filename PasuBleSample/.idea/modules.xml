@@ -5,10 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/PasuBleClientSample/PasuBleClientSample.iml" filepath="$PROJECT_DIR$/PasuBleClientSample/PasuBleClientSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/PasuBleSample.iml" filepath="$PROJECT_DIR$/PasuBleSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/PasuBleServerProfile/PasuBleServerProfile.iml" filepath="$PROJECT_DIR$/PasuBleServerProfile/PasuBleServerProfile.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PasuBleServerProfile/PasuBleServerProfile.iml" filepath="$PROJECT_DIR$/PasuBleServerProfile/PasuBleServerProfile.iml" />
       <module fileurl="file://$PROJECT_DIR$/PasuBleServerSample/PasuBleServerSample.iml" filepath="$PROJECT_DIR$/PasuBleServerSample/PasuBleServerSample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PasuBleServerSample.iml" filepath="$PROJECT_DIR$/PasuBleServerSample.iml" />
-      <module fileurl="file://$PROJECT_DIR$/PasuBleClientSample/pasubleclientsample.iml" filepath="$PROJECT_DIR$/PasuBleClientSample/pasubleclientsample.iml" />
     </modules>
   </component>
 </project>
