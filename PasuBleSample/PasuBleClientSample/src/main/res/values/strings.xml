@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Pasu Ble Client</string>
+    <string name="button_scan">Scan LE</string>
+    <string name="status_label_idle">IDLE</string>
+    <string name="status_label_scanning">Scanning for BLE devices</string>
+    <string name="unknown_device">Unknown device</string>
+</resources>

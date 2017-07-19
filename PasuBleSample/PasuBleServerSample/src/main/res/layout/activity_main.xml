@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="10dp"
+    tools:context="pl.emget.pasubleserversample.MainActivity">
+
+
+    <ToggleButton
+        android:id="@+id/toggleButtonOnOff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:textOff="@string/toggleServerOff"
+        android:textOn="@string/toggleServerOn"/>
+
+    <Button
+        android:id="@+id/buttonNotify"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:onClick="onNotifyButtonClick"
+        android:text="@string/buttonNotify"/>
+
+    <TextView
+        android:id="@+id/temperatureLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/temperature_label"
+        />
+
+    <SeekBar
+        android:id="@+id/seekBarTemperature"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:max="100"
+        />
+
+    <TextView
+        android:id="@+id/voltageLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/voltage_label"
+        />
+
+    <SeekBar
+        android:id="@+id/seekBarVoltage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:max="100"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/firmware_label"
+        />
+
+    <EditText
+        android:id="@+id/editTextFirmwareVersion"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:ems="5"
+        android:inputType="number"
+        android:text="@string/firmware_default"
+        />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/status_label"/>
+
+    <TextView
+        android:id="@+id/statusLabel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:text="@string/status_idle"
+        android:textColor="@android:color/black"/>
+
+    <LinearLayout
+        android:id="@+id/colorLine"
+        android:layout_width="match_parent"
+        android:layout_height="15dp"
+        android:orientation="horizontal"></LinearLayout>
+
+
+</LinearLayout>

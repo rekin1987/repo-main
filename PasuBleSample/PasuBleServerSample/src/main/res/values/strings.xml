@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Pasu Ble Server</string>
+    <string name="temperature_label">Temperature: %d\u2103</string>
+    <string name="voltage_label">Voltage: %dV</string>
+    <string name="status_label">Status:</string>
+    <string name="status_idle">IDLE</string>
+    <string name="firmware_label">Firmware version:</string>
+    <string name="firmware_default">1.1</string>
+    <string name="manufacturer">Pawel BLE</string>
+    <string name="toggleServerOff">Advertising is off</string>
+    <string name="toggleServerOn">Advertising now...</string>
+    <string name="buttonNotify">Notify values changed</string>
+</resources>
