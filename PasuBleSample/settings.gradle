@@ -1,1 +1,1 @@
-include ':PasuBleServerSample', ':PasuBleClientSample', ':PasuBleServerProfile', ':MyCodeTesting'
+include ':PasuBleServerSample', ':PasuBleClientSample', ':PasuBleServerProfile', ':MyCodeTesting', ':ButterKnifeTesting'

@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/ButterKnifeTesting/ButterKnifeTesting.iml" filepath="$PROJECT_DIR$/ButterKnifeTesting/ButterKnifeTesting.iml" />
       <module fileurl="file://$PROJECT_DIR$/MyCodeTesting/MyCodeTesting.iml" filepath="$PROJECT_DIR$/MyCodeTesting/MyCodeTesting.iml" />
       <module fileurl="file://$PROJECT_DIR$/PasuBleClientSample/PasuBleClientSample.iml" filepath="$PROJECT_DIR$/PasuBleClientSample/PasuBleClientSample.iml" />
       <module fileurl="file://$PROJECT_DIR$/PasuBleSample.iml" filepath="$PROJECT_DIR$/PasuBleSample.iml" />
