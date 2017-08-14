@@ -11,4 +11,5 @@ public interface MainActivityInterface {
     void setColorValue(int color);
     Context getContext();
     void postStatusUpdate(String status);
+    String getMeterlinkData();
 }

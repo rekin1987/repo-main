@@ -26,6 +26,8 @@ public class MainActivity extends Activity implements MainActivityInterface {
     private EditText mFirmwareEditText;
     private TextView mStatusLabel;
     private LinearLayout mColorLine;
+    private TextView mMeterlinkDataLabel;
+    private SeekBar mMeterlinkDataBar;
 
     private Handler mHandler;
     private GattServerWrapper mGattServerWrapper;
@@ -103,6 +105,32 @@ public class MainActivity extends Activity implements MainActivityInterface {
         // set some initial values
         mTemperatureBar.setProgress(20);
         mVoltageBar.setProgress(9);
+
+        initMeterlinkComponents();
+    }
+
+    private void initMeterlinkComponents(){
+        mMeterlinkDataLabel = (TextView) findViewById(R.id.flirMeterlinkDataLabel);
+        mMeterlinkDataBar = (SeekBar) findViewById(R.id.flirMeterlinkDataSeekBar);
+
+        mMeterlinkDataBar.setProgress(10);
+        mMeterlinkDataLabel.setText(String.format(getString(R.string.meterlink_data_label), 10));
+
+        mMeterlinkDataBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                mMeterlinkDataLabel.setText(String.format(getString(R.string.meterlink_data_label), progress));
+                mGattServerWrapper.notifyMeterlinkValuesChanged();
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
     }
 
     public void onNotifyButtonClick(View view) {
@@ -142,6 +170,11 @@ public class MainActivity extends Activity implements MainActivityInterface {
                 mStatusLabel.setText(status);
             }
         });
+    }
+
+    @Override
+    public String getMeterlinkData() {
+        return String.valueOf(mMeterlinkDataBar.getProgress());
     }
 
     @Override

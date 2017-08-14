@@ -72,6 +72,9 @@ public class GattServerWrapper {
             } else if (ServerProfile.CUSTOM_METRICS_CHARACTERISTIC_VOLTAGE_UUID.equals(charUUID)) {
                 String stringVal = mParentInterface.getVoltageValue();
                 mGattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, 0, stringVal.getBytes());
+            } else if (ServerProfile.FLIR_METERLINK_CHARACTERISTIC_UUID.equals(charUUID)) {
+                String stringVal = mParentInterface.getMeterlinkData();
+                mGattServer.sendResponse(device, requestId, BluetoothGatt.GATT_SUCCESS, 0, stringVal.getBytes());
             } else {
                 mGattServer.sendResponse(device, requestId, BluetoothGatt.GATT_FAILURE, 0, null);
             }
@@ -215,6 +218,31 @@ public class GattServerWrapper {
         } catch (InterruptedException e) {
         }
         mGattServer.addService(customMetricsService);
+
+        addMeterlinkService();
     }
 
+    private void addMeterlinkService() {
+        BluetoothGattService customMetricsService = new BluetoothGattService(ServerProfile.FLIR_METERLINK_SERVICE_UUID, BluetoothGattService
+                .SERVICE_TYPE_PRIMARY);
+        BluetoothGattCharacteristic dataChar = new BluetoothGattCharacteristic(ServerProfile.FLIR_METERLINK_CHARACTERISTIC_UUID,
+                BluetoothGattCharacteristic.PROPERTY_READ | BluetoothGattCharacteristic.PROPERTY_NOTIFY, BluetoothGattCharacteristic.PERMISSION_READ);
+        customMetricsService.addCharacteristic(dataChar);
+        // app crashes when adding two services without delay
+        try {
+            Thread.sleep(200);
+        } catch (InterruptedException e) {
+        }
+        mGattServer.addService(customMetricsService);
+    }
+
+    public void notifyMeterlinkValuesChanged() {
+        if (mConnectedDevice != null) {
+            // data characteristic
+            BluetoothGattCharacteristic dataCharacteristic = mGattServer.getService(ServerProfile.FLIR_METERLINK_SERVICE_UUID).getCharacteristic
+                    (ServerProfile.FLIR_METERLINK_CHARACTERISTIC_UUID);
+            dataCharacteristic.setValue(String.valueOf(mParentInterface.getMeterlinkData()));
+            mGattServer.notifyCharacteristicChanged(mConnectedDevice, dataCharacteristic, false);
+        }
+    }
 }

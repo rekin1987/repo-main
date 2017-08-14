@@ -10,4 +10,5 @@
     <string name="toggleServerOff">Advertising is off</string>
     <string name="toggleServerOn">Advertising now...</string>
     <string name="buttonNotify">Notify values changed</string>
+    <string name="meterlink_data_label">Meterlink data: %d</string>
 </resources>
