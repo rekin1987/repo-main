@@ -241,7 +241,7 @@ public class GattServerWrapper {
             // data characteristic
             BluetoothGattCharacteristic dataCharacteristic = mGattServer.getService(ServerProfile.FLIR_METERLINK_SERVICE_UUID).getCharacteristic
                     (ServerProfile.FLIR_METERLINK_CHARACTERISTIC_UUID);
-            dataCharacteristic.setValue(String.valueOf(mParentInterface.getMeterlinkData()));
+            dataCharacteristic.setValue(mParentInterface.getMeterlinkData());
             mGattServer.notifyCharacteristicChanged(mConnectedDevice, dataCharacteristic, false);
         }
     }
