@@ -31,5 +31,12 @@ class MainActivity : Activity() {
         //title = findViewById(R.id.seekBar1)
 
         title2.setText("kkk");
+
+//        title2.setOnClickListener(new OnClickListener(){
+//
+//        })
+
+
+
     }
 }
