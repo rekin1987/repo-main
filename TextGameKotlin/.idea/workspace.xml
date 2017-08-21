@@ -1,9 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cbb23bde-b09f-4667-a55e-5ccd1bb26298" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/pl/emget/textgamekotlin/Main.kt" afterPath="$PROJECT_DIR$/src/pl/emget/textgamekotlin/Main.kt" />
-    </list>
+    <list default="true" id="cbb23bde-b09f-4667-a55e-5ccd1bb26298" name="Default" comment="" />
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
