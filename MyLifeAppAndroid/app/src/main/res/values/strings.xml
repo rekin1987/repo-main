@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">MyLifeAppAndroid</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="nav_menu_sleep">Sleep</string>
+    <string name="nav_menu_work">At work</string>
+    <string name="nav_menu_home">At home</string>
+    <string name="nav_menu_sport">Workout</string>
+    <string name="nav_menu_others">Others</string>
+
+</resources>
