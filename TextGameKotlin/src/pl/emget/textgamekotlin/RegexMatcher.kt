@@ -1,4 +1,4 @@
-package pl.emget.textgame
+package pl.emget.textgamekotlin
 
 object RegexMatcher {
 

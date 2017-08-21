@@ -1,4 +1,4 @@
-package pl.emget.textgame
+package pl.emget.textgamekotlin
 
 private val TAG = "Main"
 
