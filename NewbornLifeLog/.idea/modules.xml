@@ -3,7 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/NewbornLifeLog.iml" filepath="$PROJECT_DIR$/NewbornLifeLog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/NewbornLifeLog-app.iml" filepath="$PROJECT_DIR$/app/NewbornLifeLog-app.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/repo-main-NewbornLifeLog.iml" filepath="$PROJECT_DIR$/repo-main-NewbornLifeLog.iml" />
     </modules>
   </component>
 </project>
