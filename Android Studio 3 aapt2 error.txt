@@ -1,0 +1,128 @@
+https://stackoverflow.com/questions/44196672/aapt2-compile-failed-invalid-dimen-on-android-3-0-canary-1
+
+
+set android.enableAapt2=false in your gradle.properties file
+
+in <studio>/bin/studio.sh add:
+export LC_NUMERIC="en_US.UTF-8"
+
+details and 3 solutions below (I think first did not work for me):
+
+
+Below are mentioned three solutions: A, B, and C; pick one that suites you:
+A) Fixing Android Studio via Ubuntu .desktop launcher file
+
+This is an Ubuntu-only alternative to the general approach on Fixing Android Studio (see below). Note that you may still want to implement the part about Fixing the shell, and perhaps even revert any modifications to studio.sh to fully confirm this fix.
+
+I got tired of patching my studio.sh for every canary update, so I came up with a better solution that eliminates this step. It works on Ubuntu and simply involves creating a .desktop launcher that sets the sick environment variable in question.
+
+    Make a note of where your Android Studio 3 is installed, e.g. ~/opt/android-studio-3.
+
+    Prepare your local icon and applications directory, in case the don't already exist:
+
+    mkdir -vp ~/.local/share/icons ~/.local/share/applications
+
+    Create an Android Studio 3 icon that will make your launcher stand out from the default icon and save it into ~/.local/share/icons/android-studio-3.png. Or you can use the one I made by rubbing a piece of cheese on the original (~/opt/android-studio-3/bin/studio.png):
+
+    android-studio-3.png
+
+    Create an Android Studio 3 launcher file by copy and pasting this into a shell:
+
+    cat <<-EOF > ~/.local/share/applications/android-studio-3.desktop
+    [Desktop Entry]
+    Version=1.0
+    Type=Application
+    Name=Android Studio 3
+    Icon=android-studio-3
+    Exec=env LC_NUMERIC="en_US.UTF-8" opt/android-studio-3/bin/studio.sh "%f"
+    Categories=Development;IDE;
+    Terminal=false
+    StartupWMClass=jetbrains-studio
+    EOF
+
+    Make it executable:
+
+    chmod +x ~/.local/share/applications/android-studio-3.desktop
+
+    Now for the tricky part. Ideally you should be able find, start, and create shorts for Android Studio 3 from the Dash:
+
+For your pleasure
+
+But personally, I almost always have trouble getting Ubuntu to detect my new or changed .desktop files. One solution is to log out and back in again. If anyone knows how to force a rescan please let me know!
+B) Fixing Android Studio
+
+Here's an easy, elegant, and semi-permanent fix: Only change the locale of Android Studio itself by modifying its startup script:
+
+    Edit studio.sh e.g. ~/opt/android-studio/bin/studio.sh or whatever your installation path may be.
+
+    Somewhere at the top of the file, below #!/bin/sh and before the first lines of code appear, add this:
+
+    export LC_NUMERIC="en_US.UTF-8".
+
+    Here's the top part of my studio.sh for completeness:
+
+    #!/bin/sh
+    #
+    # ---------------------------------------------------------------------
+    # Android Studio startup script.
+    # ---------------------------------------------------------------------
+    #
+
+    LC_NUMERIC="en_US.UTF-8"
+
+    message()
+    {
+      TITLE="Cannot start Android Studio"
+    ...
+
+    Restart Android Studio
+
+C) Fixing the shell; Gradle, Jenkins, all that
+
+Building from the shell using gradlew also requires the fix to be applied. This only affects the shell and not Android Studio. Pick one:
+
+    Either specify the the fix on every invocation like this:
+
+    LC_NUMERIC="en_US.UTF-8" ./gradlew clean assDebug
+
+    Or to make this permanent for the project, edit the gradlew file in the root of the project and somewhere at the top add this:
+
+    LC_NUMERIC="en_US.UTF-8"
+
+    Like here:
+
+    #!/usr/bin/env bash
+
+    ################################################################################    
+    ##
+    ##  Gradle start up script for UN*X
+    ##
+    ################################################################################
+
+    LC_NUMERIC="en_US.UTF-8"
+
+    # Add default JVM options here. You can al...
+    DEFAULT_JVM_OPTS=""
+
+    APP_NAME="Gradle"
+    ...
+
+    Or you can of course also add a global and permanent fix though the use of an alias, gr:
+
+    cat <<EOF>>~/.bash_aliases
+
+    # Fixing Android Studio 3 Canary bug https://stackoverflow.com/a/44304075/2412477
+    alias gr='LC_NUMERIC="en_US.UTF-8" ./gradlew'
+    EOF
+
+    Note this is how bash shell aliases are added on Ubuntu; if you're on a different OS perhaps you should append to ~/.bashrc or ~/.profile instead.
+
+    Then start a new shell and now instead of invoking ./gradlew use the new alias gr:
+
+    gr clean assDebug
+
+The clear disadvantage of #2 is that this has to be applied to all projects manually. The advantage, I think, is that this will automatically be overwritten when a new gradlew is installed, much like studio.sh gets replaced, so you get to test if the bug has been fixed =)
+A note on Upgrading Android Studio or Gradle
+
+When you later upgrade your Android Studio installation, it will detect that you've modified studio.sh. You should let the installer replace the file, and afterwards perform the patch again as described above. Finally restart Android Studio, and you'll be ready again. The shell alias won't be reverted by this upgrade.
+
