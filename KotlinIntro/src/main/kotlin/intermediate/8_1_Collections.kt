@@ -24,3 +24,12 @@ fun collections1() {
 
 }
 
+fun collections2(){
+    val list = listOf("one", "two", "three", "four", "five")
+    var list2 = list.map { it + "aa" }
+
+    list2 = list.mapIndexed { index: Int, s: String ->  s + "_index_$index" }
+    list2 = list.mapIndexed { index, str -> str + "_index_$index" }
+
+}
+
