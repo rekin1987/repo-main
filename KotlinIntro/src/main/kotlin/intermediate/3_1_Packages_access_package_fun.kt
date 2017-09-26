@@ -1,4 +1,4 @@
-package abc
+package intermediate
 
 // we are in different package, so need to import or use fully qualified name
 import com.example.globalFun

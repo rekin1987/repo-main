@@ -1,7 +1,11 @@
-package abc
+package basics
 
 
-open class VisClass {
+private class MyPriv
+
+
+
+class VisClass {
 
     internal var pp = 9;
 

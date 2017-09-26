@@ -1,6 +1,6 @@
-package abc
+package intermediate
 
-fun flavours1() {
+fun collections1() {
     val arrayInt = listOf(1, 2, 3, 4, 5)
     var arrayStr = listOf("one", "two", "three", "four", "five")
 

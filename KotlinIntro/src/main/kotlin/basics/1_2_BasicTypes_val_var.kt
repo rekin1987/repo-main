@@ -1,4 +1,4 @@
-package abc
+package basics
 
 fun valAndVar() {
 

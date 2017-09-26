@@ -1,4 +1,4 @@
-package abc
+package basics
 
 
 fun nullOrNotNull() {
@@ -7,5 +7,5 @@ fun nullOrNotNull() {
 
     // val notNullLong: Long = null // can't assign null
 
-    // val vv: Int = mightBeAnotherNull
+    // val vv: Int = mightBeAnotherNull // require type Int, but have type Nothing?
 }
